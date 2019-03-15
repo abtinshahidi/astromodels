@@ -280,6 +280,11 @@ def get_models(model_dat_path):
 
                 par_name = "redshift"
 
+                # this is illegal because of the 2D functions
+            if par_name == 'y':
+
+                par_name = 'y1'
+                
             # Check that the parameter name is not an illegal Python name
             if par_name in illegal_variable_names:
 
@@ -308,6 +313,8 @@ def get_models(model_dat_path):
 
                 par_unit = ""
 
+            
+                
             # There are funny units in model.dat, like "Rs" (which means Schwarzschild radius) or other things
             # so let's try to convert the par_unit into an astropy.Unit instance. If that fails, use a unitless unit
             try:
@@ -328,6 +335,18 @@ def get_models(model_dat_path):
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
+            if float(default_value) > hard_maximum:
+
+                if hard_maximum is not None:
+                    default_value = hard_maximum
+
+            elif float(default_value) < hard_minimum:
+
+                if hard_minimum is not None:
+                    default_value = hard_minimum
+
+
+            
             this_model['parameters'][par_name] = {'initial value': float(default_value),
                                                   'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
                                                           'XspecModels.html)',
