@@ -8,7 +8,7 @@ import os
 import re
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
-
+from pkg_resources import parse_version
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
@@ -182,6 +182,44 @@ def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
 
+
+    xspec_raw_version = os.environ.get('XSPEC_VERSION')
+
+
+    macros = []
+
+    if xspec_raw_version is not None:
+        print("Found XSPEC version: {}".format(xspec_raw_version))
+        xspec_version = parse_version(xspec_raw_version)
+
+        if xspec_version >= parse_version("12.9.0"):
+            macros += [('XSPEC_12_9_0', None)]
+        else:
+#            self.warn("XSPEC Version is less than 12.9.0, which is the minimal supported version for Sherpa")
+            pass
+            
+        if xspec_version >= parse_version("12.9.1"):
+            macros += [('XSPEC_12_9_1', None)]
+
+        if xspec_version >= parse_version("12.10.0"):
+            macros += [('XSPEC_12_10_0', None)]
+
+        if xspec_version >= parse_version("12.10.1"):
+            macros += [('XSPEC_12_10_1', None)]
+
+        # Since there are patches (e.g. 12.10.0c), look for the
+        # "next highest version.
+        if xspec_version >= parse_version("12.10.2"):
+           # self.warn("XSPEC Version is greater than 12.10.1, which is the latest supported version for Sherpa")
+            pass
+
+    else:
+
+        print('The env. variable XSPEC_VERSION was NOT set. If the XSPEC install failed, try setting this')
+        print('to your installed version of XSPEC')
+
+
+        
     if headas_root is None:
 
         # See, maybe we are running in Conda
@@ -266,8 +304,9 @@ def setup_xspec():
         Extension("astromodels.xspec._xspec",
 
                   ["astromodels/xspec/src/_xspec.cc", ],
-
+                  include_dirs=[os.path.join(headas_root,'include' )],
                   libraries=libraries,
+                  define_macros=macros,
                   library_dirs=library_dirs,
                   runtime_library_dirs=library_dirs,
                   extra_compile_args=[])]
