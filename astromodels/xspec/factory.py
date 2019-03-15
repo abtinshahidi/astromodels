@@ -608,6 +608,7 @@ def setup_xspec_models():
             # convolution models are not supported
             continue
 
+        
         if not hasattr(_xspec, xspec_function):
 
             # Some function do not exist in the wrapper. Let's ignore them
