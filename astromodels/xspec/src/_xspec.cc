@@ -111,6 +111,8 @@ int _sherpa_init_xspec_library();
 #include "funcWrappers.h"
 
 extern "C" {
+  
+void init_xspec();
 
 #ifdef XSPEC_12_10_1
 void agnsed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
