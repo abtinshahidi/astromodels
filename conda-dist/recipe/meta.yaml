@@ -10,10 +10,14 @@ source:
 
 requirements:
   build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+
 #    - toolchain
-    - python
-    - gcc  # [linux]
-    - libgfortran
+#    - python
+#    - gcc  # [linux]
+#    - libgfortran
     - setuptools
     - pip
     - numpy
@@ -24,11 +28,11 @@ requirements:
     - hdf5
     - pytables
     - pandas
-    - xspec-modelsonly-lite
+    - xspec-models
 
   run:
     - python
-    - libgfortran
+#    - libgfortran
     - numpy
     - pyyaml
     - astropy
@@ -62,7 +66,7 @@ test:
   # at test time.
 
   requires:
-    - xspec-modelsonly-lite
+    - xspec-models
 
 
 about:

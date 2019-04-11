@@ -185,6 +185,23 @@ def setup_xspec():
 
     xspec_raw_version = os.environ.get('XSPEC_VERSION')
 
+    if xspec_raw_version is None:
+
+        conda_prefix = os.environ.get("CONDA_PREFIX")
+        
+        if conda_prefix is None:
+            
+            # Maybe this is a Conda build
+            
+            conda_prefix = os.environ.get("PREFIX")
+
+        if conda_prefix is not None:
+
+            # ok this is conda
+            xspec_raw_version = '12.10.1'
+
+        
+    
 
     macros = []
 
@@ -236,7 +253,10 @@ def setup_xspec():
             # Yes, this is Conda
             # Let's see if the package xspec-modelsonly has been installed by checking whether one of the Xspec
             # libraries exists within conda
-            conda_lib_path = os.path.join(conda_prefix, 'lib')
+
+            #conda_lib_path = os.path.join(conda_prefix, 'lib')
+            conda_lib_path = conda_prefix
+            
             this_lib, this_lib_path = find_library('XSFunctions', additional_places=[conda_lib_path])
 
             if this_lib is None:
@@ -297,6 +317,7 @@ def setup_xspec():
     # Remove duplicates from library_dirs
 
     library_dirs = list(set(library_dirs))
+
 
     # Configure the variables to build the external module with the C/C++ wrapper
     ext_modules_configuration = [
