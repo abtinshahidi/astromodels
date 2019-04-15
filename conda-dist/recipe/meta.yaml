@@ -10,9 +10,9 @@ source:
 
 requirements:
   build:
-    - toolchain
+#    - toolchain
     - python
-    - gcc  # [linux]
+#    - gcc  # [linux]
     - libgfortran
     - setuptools
     - pip
@@ -24,7 +24,7 @@ requirements:
     - hdf5
     - pytables
     - pandas
-    - xspec-modelsonly-lite
+    - xspec-models-lite
 
   run:
     - python
@@ -62,7 +62,7 @@ test:
   # at test time.
 
   requires:
-    - xspec-modelsonly-lite
+    - xspec-models-lite
 
 
 about:
