@@ -65,7 +65,8 @@ def find_library(library_root, additional_places=None):
     # LD_LIBRARY_PATH or DYLD_LIBRARY_PATH)
 
     first_guess = ctypes.util.find_library(library_root)
-
+    
+    
     if first_guess is not None:
 
         # Found in one of the system paths
@@ -129,8 +130,12 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
+
+
+            
             results = glob.glob(os.path.join(search_path, "lib%s*" % library_root))
 
+            
             if len(results) >= 1:
 
                 # Results contain things like libXS.so, libXSPlot.so, libXSpippo.so
@@ -216,6 +221,8 @@ def setup_xspec():
 
                 # Set up the HEADAS variable so that the following will find the libraries
                 headas_root = conda_prefix
+                print("HEADAS set to %s" % headas_root)
+                
 
         else:
 
@@ -236,6 +243,8 @@ def setup_xspec():
     library_dirs = []
 
     for lib_root in libraries_root:
+
+        print('Looking for XSPEC libs in %s'% os.path.join(headas_root, 'lib'))
 
         this_library, this_library_path = find_library(lib_root, additional_places=[os.path.join(headas_root, 'lib')])
 

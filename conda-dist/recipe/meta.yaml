@@ -10,12 +10,14 @@ source:
 
 requirements:
   build:
-#    - toolchain
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - xspec-models-lite
+  host:
     - python
-#    - gcc  # [linux]
-    - libgfortran
-    - setuptools
-    - pip
+#    - setuptools
+#    - pip
     - numpy
     - pyyaml
     - astropy
@@ -25,10 +27,14 @@ requirements:
     - pytables
     - pandas
     - xspec-models-lite
+    - cfitsio
+    - ccfits
+    - wcslib
+
 
   run:
     - python
-    - libgfortran
+ #   - libgfortran
     - numpy
     - pyyaml
     - astropy
@@ -38,6 +44,11 @@ requirements:
     - pytables
     - pandas
     - dill
+    - xspec-models-lite
+    - cfitsio
+    - ccfits
+    - wcslib
+
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
@@ -53,7 +64,7 @@ test:
     - astromodels.functions.dark_matter
     - astromodels.sources
     - astromodels.utils
-    - astromodels.xspec
+#    - astromodels.xspec
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}
